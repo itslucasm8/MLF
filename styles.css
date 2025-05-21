@@ -132,9 +132,6 @@ body {
   margin-left: 0.7rem;
 }
 
-#collapse-all-space, #collapse-all-btn {
-  display: none !important;
-}
 
 .entry-fields {
   display: grid;
