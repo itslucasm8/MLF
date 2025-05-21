@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outil de Calcul des 88 Jours WHV | My Little France</title>
+  <meta name="description" content="Calculez vos jours de travail éligibles pour le visa vacances-travail Australie (WHV) avec notre outil interactif. Conseils, validation, et suivi en temps réel.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <!-- Main Navigation (copied from mylittlefrance.com.au) -->
+  <header class="mlf-nav">
+    <div class="mlf-nav-container">
+      <a href="/" class="mlf-logo-link"><img src="https://cdn.shopify.com/s/files/1/0668/5258/5787/files/logo_e958d575-07bb-4350-9f53-7b8cb75e826a.png?v=1732600336" alt="My Little France" class="mlf-logo"></a>
+      <nav class="mlf-main-menu">
+        <a href="/collections/all">Nos Packs</a>
+        <a href="/pages/services">Nos Services</a>
+        <a href="/pages/decouvrir-laustralie">Découvrir l'Australie</a>
+        <a href="/pages/partenaires">Nos Partenaires</a>
+        <a href="/blogs/blog">Blog</a>
+        <a href="/pages/a-propos">À Propos</a>
+        <a href="/pages/contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section id="visa-calculator" class="mlf-card">
+      <h1>Outil de Calcul des 88 Jours WHV</h1>
+      <p>Calculez vos jours de travail éligibles pour le visa vacances-travail Australie (WHV) avec notre outil interactif. Conseils, validation, et suivi en temps réel.</p>
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <span id="progress-text">0 / 88 jours de visa complétés</span>
+      <form id="weeks-form" autocomplete="off">
+        <div id="collapse-all-space">
+          <button type="button" id="collapse-all-btn" class="mlf-btn mlf-btn-secondary"><i class="fa-solid fa-chevron-up"></i> Tout réduire</button>
+        </div>
+        <div id="weeks-entries">
+          <div class="entry" data-index="0">
+            <div class="entry-fields">
+              <label><i class="fa-regular fa-calendar-days"></i> Date de début
+                <input type="date" class="start-date" required>
+                <div class="valid-msg start-date-feedback"></div>
+              </label>
+              <label><i class="fa-regular fa-calendar-check"></i> Date de fin
+                <input type="date" class="end-date" required>
+                <div class="valid-msg end-date-feedback"></div>
+              </label>
+              <label><i class="fa-solid fa-location-dot"></i> Code postal
+                <input type="text" class="postcode" maxlength="4" required>
+                <div class="valid-msg postcode-feedback"></div>
+              </label>
+              <label><i class="fa-solid fa-briefcase"></i> Type d'emploi
+                <select class="job-type" required>
+                  <option value="">Sélectionnez le type d'emploi</option>
+                  <!-- Options will be populated by JS -->
+                </select>
+                <div class="valid-msg job-type-feedback"></div>
+              </label>
+              <label><i class="fa-regular fa-clock"></i> Heures travaillées
+                <input type="number" class="hours-worked" min="0" step="0.1" required>
+                <div class="valid-msg hours-worked-feedback"></div>
+              </label>
+            </div>
+            <button type="button" class="remove-week" aria-label="Supprimer la semaine">&times;</button>
+          </div>
+        </div>
+        <button type="button" id="add-week-btn" class="mlf-btn"><i class="fa-solid fa-plus"></i> Ajouter une semaine</button>
+      </form>
+    </section>
+  </main>
+  <!-- Footer (copied from mylittlefrance.com.au) -->
+  <footer class="mlf-footer">
+    <div class="mlf-footer-container">
+      <div class="mlf-footer-logo"><img src="https://cdn.shopify.com/s/files/1/0668/5258/5787/files/logo_e958d575-07bb-4350-9f53-7b8cb75e826a.png?v=1732600336" alt="My Little France"></div>
+      <div class="mlf-footer-links">
+        <a href="/pages/contact">Contact</a> |
+        <a href="/pages/conditions">Conditions d'Utilisation</a> |
+        <a href="/pages/confidentialite">Politique de Confidentialité</a>
+      </div>
+      <div class="mlf-footer-copy">© 2025, My Little France. Tous droits réservés.</div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html> 
