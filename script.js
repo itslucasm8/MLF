@@ -100,37 +100,6 @@ function populateJobTypeDropdown(select) {
 populateJobTypeDropdown(calculator.querySelector('.job-type'));
 
 // --- Add/Remove week entry logic ---
-addWeekBtn.addEventListener('click', () => {
-  const idx = weeksEntries.children.length;
-  const template = weeksEntries.children[0];
-  const clone = template.cloneNode(true);
-  clone.setAttribute('data-index', idx);
-  // Prefill postcode/job type from last entry
-  if (weeksEntries.children.length > 0) {
-    const last = weeksEntries.children[weeksEntries.children.length - 1];
-    clone.querySelector('.postcode').value = last.querySelector('.postcode').value;
-    clone.querySelector('.job-type').value = last.querySelector('.job-type').value;
-  }
-  // Reset other values
-  clone.querySelectorAll('input, select').forEach(el => {
-    if (el.classList.contains('postcode') || el.classList.contains('job-type')) return;
-    if (el.tagName === 'SELECT') el.selectedIndex = 0;
-    else el.value = '';
-  });
-  // Remove any previous error states and feedback
-  clone.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
-  clone.querySelectorAll('.valid-msg, .invalid-msg').forEach(fb => { fb.textContent = ''; fb.classList.remove('valid-msg', 'invalid-msg'); });
-  // Remove row feedback if present
-  const oldFeedback = clone.querySelector('.row-feedback');
-  if (oldFeedback) oldFeedback.remove();
-  // Attach event listeners
-  populateJobTypeDropdown(clone.querySelector('.job-type'));
-  clone.querySelector('.remove-week').addEventListener('click', removeWeekHandler);
-  // Insert
-  weeksEntries.appendChild(clone);
-  updateAll();
-  expandEntry(clone);
-});
 function removeWeekHandler(e) {
   if (weeksEntries.children.length > 1) {
     e.target.closest('.entry').remove();
