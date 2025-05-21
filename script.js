@@ -343,6 +343,7 @@ function updateAll() {
   // Update progress
   const percent = Math.min(100, (totalVisaDays / VISA_DAYS_TARGET) * 100);
   progressBar.style.width = percent + '%';
+  progressBar.setAttribute('aria-valuenow', Math.round(totalVisaDays));
   progressText.textContent = `${Math.round(totalVisaDays)} / ${VISA_DAYS_TARGET} jours de visa complétés`;
   saveEntries();
 }
