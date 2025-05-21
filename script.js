@@ -80,6 +80,7 @@ const weeksEntries = calculator.querySelector('#weeks-entries');
 const addWeekBtn = calculator.querySelector('#add-week-btn');
 const progressBar = calculator.querySelector('#progress-bar');
 const progressText = calculator.querySelector('#progress-text');
+const STORAGE_KEY = 'whv-week-data';
 
 // --- Populate job type dropdowns ---
 function populateJobTypeDropdown(select) {
@@ -140,6 +141,55 @@ function removeWeekHandler(e) {
 // Attach remove handler to initial row
 weeksEntries.querySelector('.remove-week').addEventListener('click', removeWeekHandler);
 
+// --- Persistence ---
+function serializeEntries() {
+  return Array.from(weeksEntries.children).map(entry => ({
+    start: entry.querySelector('.start-date').value,
+    end: entry.querySelector('.end-date').value,
+    postcode: entry.querySelector('.postcode').value,
+    jobType: entry.querySelector('.job-type').value,
+    hours: entry.querySelector('.hours-worked').value
+  }));
+}
+function saveEntries() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeEntries()));
+}
+function fillEntry(entry, data = {}) {
+  entry.querySelector('.start-date').value = data.start || '';
+  entry.querySelector('.end-date').value = data.end || '';
+  entry.querySelector('.postcode').value = data.postcode || '';
+  entry.querySelector('.job-type').value = data.jobType || '';
+  entry.querySelector('.hours-worked').value = data.hours || '';
+  entry.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+  entry.querySelectorAll('.valid-msg, .invalid-msg').forEach(fb => { fb.textContent = ''; fb.classList.remove('valid-msg', 'invalid-msg'); });
+  const rf = entry.querySelector('.row-feedback');
+  if (rf) rf.textContent = '';
+}
+function loadEntries() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (!stored) return;
+  let arr;
+  try { arr = JSON.parse(stored); } catch(e) { return; }
+  if (!Array.isArray(arr)) return;
+  while (weeksEntries.children.length > 1) weeksEntries.lastElementChild.remove();
+  if (arr.length === 0) { fillEntry(weeksEntries.children[0]); return; }
+  fillEntry(weeksEntries.children[0], arr[0]);
+  for (let i=1; i<arr.length; i++) {
+    const template = weeksEntries.children[0];
+    const clone = template.cloneNode(true);
+    clone.setAttribute('data-index', i);
+    populateJobTypeDropdown(clone.querySelector('.job-type'));
+    clone.querySelector('.remove-week').addEventListener('click', removeWeekHandler);
+    weeksEntries.appendChild(clone);
+    fillEntry(clone, arr[i]);
+  }
+}
+function clearData() {
+  localStorage.removeItem(STORAGE_KEY);
+  while (weeksEntries.children.length > 1) weeksEntries.lastElementChild.remove();
+  fillEntry(weeksEntries.children[0]);
+  updateAll();
+}
 // --- Validation and Calculation ---
 function isEligiblePostcode(pc) {
   return ELIGIBLE_POSTCODES.includes(pc);
@@ -294,6 +344,7 @@ function updateAll() {
   const percent = Math.min(100, (totalVisaDays / VISA_DAYS_TARGET) * 100);
   progressBar.style.width = percent + '%';
   progressText.textContent = `${Math.round(totalVisaDays)} / ${VISA_DAYS_TARGET} jours de visa complétés`;
+  saveEntries();
 }
 
 // --- Listen for changes (debounced) ---
@@ -306,6 +357,7 @@ const style = document.createElement('style');
 style.textContent = `.invalid { border-color: #d32f2f !important; background: #fff0f0 !important; }`;
 document.head.appendChild(style);
 
+loadEntries();
 // Initial calculation
 updateAll();
 
@@ -448,3 +500,11 @@ exportBtn.onclick = function() {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }; 
+const clearBtn = document.createElement('button');
+clearBtn.type = 'button';
+clearBtn.className = 'mlf-btn mlf-btn-secondary';
+clearBtn.style.marginTop = '1.2em';
+clearBtn.textContent = 'Effacer les données';
+form.appendChild(clearBtn);
+clearBtn.addEventListener('click', clearData);
+
