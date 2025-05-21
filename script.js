@@ -80,6 +80,8 @@ const weeksEntries = calculator.querySelector('#weeks-entries');
 const addWeekBtn = calculator.querySelector('#add-week-btn');
 const progressBar = calculator.querySelector('#progress-bar');
 const progressText = calculator.querySelector('#progress-text');
+const STORAGE_KEY = 'whv-week-data';
+const collapseAllBtn = calculator.querySelector('#collapse-all-btn');
 
 // --- Populate job type dropdowns ---
 function populateJobTypeDropdown(select) {
@@ -346,6 +348,20 @@ weeksEntries.addEventListener('click', function(e) {
     const entry = e.target.closest('.entry');
     expandEntry(entry);
   }
+});
+
+// Toggle collapse/expand for all entries
+let allCollapsed = false;
+collapseAllBtn.addEventListener('click', () => {
+  const entries = Array.from(weeksEntries.children);
+  if (allCollapsed) {
+    entries.forEach(expandEntry);
+    collapseAllBtn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Tout réduire';
+  } else {
+    entries.forEach(collapseEntry);
+    collapseAllBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Tout développer';
+  }
+  allCollapsed = !allCollapsed;
 });
 // When adding a new week, prefill postcode/job type from last entry if present
 addWeekBtn.addEventListener('click', () => {
